@@ -1,12 +1,12 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >=0.4.22 <0.9.0;
 
-import "./BoMToken.sol";
+import "./Token.sol";
 
 contract dBank {
 
   //assign Token contract to variable
-  BoMToken private bomToken;
+  Token private token;
   //add mappings
   mapping(address => uint) public etherBalanceOf;
   mapping(address => uint) public depositStart;
@@ -15,8 +15,8 @@ contract dBank {
   event Deposit(address indexed user, uint etherAmount, uint timeStart);
   event Withdraw(address indexed user, uint etherAmount, uint depositTime, uint interest);
   //pass as constructor argument deployed BoMToken contract
-  constructor(BoMToken _token) public {
-    BoMToken = _token;
+  constructor(Token _token) public {
+    token = _token;
     //assign token deployed contract to variable
   }
 
@@ -31,7 +31,7 @@ contract dBank {
     emit Deposit(msg.sender, msg.value, block.timestamp);
   }
 
-  function withdraw() public {
+  function withdraw() payable public {
     require(isDeposited[msg.sender]==true, 'Error, no previous deposit');
     uint userBalance = etherBalanceOf[msg.sender]; //for event
     //check if msg.sender deposit status is true
@@ -53,7 +53,7 @@ contract dBank {
 
     //send eth to user
     msg.sender.transfer(userBalance);
-    bomToken.mint(msg.sender, interest); //send interest in tokens to user
+    token.mint(msg.sender, interest); //send interest in tokens to user
 
     //reset depositer data
     depositStart[msg.sender] = 0;
