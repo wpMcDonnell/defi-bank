@@ -16,7 +16,7 @@ contract dBank {
   event Withdraw(address indexed user, uint etherAmount, uint depositTime, uint interest);
   //pass as constructor argument deployed BoMToken contract
   constructor(BoMToken _token) public {
-    BoMTokent = _token;
+    BoMToken = _token;
     //assign token deployed contract to variable
   }
 
