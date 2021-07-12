@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: MIT
-pragma solidity >=0.4.22 <0.9.0;
+pragma solidity >=0.6.0 <0.8.0;
 
 import "./Token.sol";
 
-contract dBank {
+contract defiBank {
 
   //assign Token contract to variable
   Token private token;
@@ -14,7 +14,7 @@ contract dBank {
   //add events
   event Deposit(address indexed user, uint etherAmount, uint timeStart);
   event Withdraw(address indexed user, uint etherAmount, uint depositTime, uint interest);
-  //pass as constructor argument deployed BoMToken contract
+  //pass as constructor argument deployed Token contract
   constructor(Token _token) public {
     token = _token;
     //assign token deployed contract to variable
@@ -31,7 +31,7 @@ contract dBank {
     emit Deposit(msg.sender, msg.value, block.timestamp);
   }
 
-  function withdraw() payable public {
+  function withdraw() public {
     require(isDeposited[msg.sender]==true, 'Error, no previous deposit');
     uint userBalance = etherBalanceOf[msg.sender]; //for event
     //check if msg.sender deposit status is true
